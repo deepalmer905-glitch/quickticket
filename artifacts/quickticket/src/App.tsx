@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { QRCodeSVG } from "qrcode.react";
 
 const ISSUES = [
   { icon: "📶", label: "Internet Down", value: "Internet is down or slow" },
@@ -9,12 +10,15 @@ const ISSUES = [
   { icon: "❓", label: "Other Issue", value: "Other tech issue" },
 ];
 
+const APP_URL = window.location.origin + window.location.pathname;
+
 export default function App() {
   const [selectedIssue, setSelectedIssue] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [details, setDetails] = useState("");
   const [sent, setSent] = useState(false);
+  const [showQR, setShowQR] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
   function selectIssue(issue: string) {
@@ -103,6 +107,32 @@ export default function App() {
             ✅ Ticket sent! IT will contact you ASAP.
           </div>
         )}
+
+        {/* QR Code Section */}
+        <div className="qr-section">
+          <button className="qr-toggle" onClick={() => setShowQR(!showQR)}>
+            {showQR ? "▲ Hide QR Code" : "📲 Show QR Code to Share"}
+          </button>
+          {showQR && (
+            <div className="qr-panel">
+              <div className="qr-box">
+                <QRCodeSVG
+                  value={APP_URL}
+                  size={160}
+                  bgColor="#ffffff"
+                  fgColor="#1a1a2e"
+                  level="M"
+                  includeMargin={true}
+                />
+              </div>
+              <p className="qr-label">Scan to open QuickTicket</p>
+              <p className="qr-sub">Print this and stick it on desks, printers, or a break room wall</p>
+              <button className="qr-print-btn" onClick={() => window.print()}>
+                🖨️ Print QR Code
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="footer">
           <strong>IT Support — Derrick Palmer</strong>
