@@ -38,7 +38,7 @@ export default function App() {
     const body = encodeURIComponent(
       `Issue: ${selectedIssue}\nName: ${name}\nLocation: ${location}\nDetails: ${details}\n\nSent from QuickTicket`
     );
-    window.location.href = `mailto:deepalmer905@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:support@palmertechsolutions.com?subject=${subject}&body=${body}`;
     setSent(true);
     setName("");
     setLocation("");
@@ -135,9 +135,8 @@ export default function App() {
         </div>
 
         <div className="footer">
-          <strong>IT Support — Derrick Palmer</strong>
-          <span>267-770-0478</span>
-          <span>20-Year Philadelphia Tech · CCP Computer Science Student</span>
+          <strong>IT Support by Palmer Tech Solutions LLC</strong>
+          <span>20 Years Fixing Philly Tech</span>
         </div>
       </div>
     </div>
