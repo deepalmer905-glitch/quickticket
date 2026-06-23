@@ -18,6 +18,7 @@ export default function App() {
   const [location, setLocation] = useState("");
   const [details, setDetails] = useState("");
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -29,16 +30,28 @@ export default function App() {
     }, 50);
   }
 
-  function sendTicket() {
+  async function sendTicket() {
     if (!name.trim()) {
       alert("Please enter your name so IT knows who to help.");
       return;
     }
-    const subject = encodeURIComponent(`IT Ticket: ${selectedIssue} — ${name}`);
-    const body = encodeURIComponent(
-      `Issue: ${selectedIssue}\nName: ${name}\nLocation: ${location}\nDetails: ${details}\n\nSent from QuickTicket`
-    );
-    window.location.href = `mailto:support@palmertechsolutions.com?subject=${subject}&body=${body}`;
+    setSending(true);
+    const data = new FormData();
+    data.append("_subject", "New PTS Ticket!");
+    data.append("_captcha", "false");
+    data.append("Issue", selectedIssue!);
+    data.append("Name", name);
+    data.append("Location", location || "Not provided");
+    data.append("Details", details || "None");
+    try {
+      await fetch("https://formsubmit.co/deepalmer904@gmail.com", {
+        method: "POST",
+        body: data,
+      });
+    } catch (_) {
+      // FormSubmit redirects on success — network error is expected in fetch mode
+    }
+    setSending(false);
     setSent(true);
     setName("");
     setLocation("");
@@ -108,8 +121,8 @@ export default function App() {
                 className="input textarea"
                 rows={3}
               />
-              <button className="send-btn" onClick={sendTicket}>
-                📨 Send Ticket to IT
+              <button className="send-btn" onClick={sendTicket} disabled={sending}>
+                {sending ? "⏳ Sending…" : "📨 Send Ticket to IT"}
               </button>
             </div>
           </div>
