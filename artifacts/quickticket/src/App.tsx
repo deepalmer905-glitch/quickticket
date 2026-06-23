@@ -55,7 +55,20 @@ export default function App() {
           <p>Click what's broken — IT will be notified instantly.</p>
         </div>
 
-        <div className="issue-grid">
+        <div className="cta-wrap">
+          <a
+            href="#issues"
+            className="cta-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("issues")?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            SUBMIT QUICK TICKET
+          </a>
+        </div>
+
+        <div className="issue-grid" id="issues">
           {ISSUES.map((issue) => (
             <button
               key={issue.value}
